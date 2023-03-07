@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Blog Ninja | <%= title %></title>
+        <style>
+ .details{ 
+  position:relative;
+  border:1px solid lightgray;
+  padding:1rem;
+}
+/* .details content{ 
+    border:1px solid lightgray;
+} */
+.delete{ 
+  position:absolute;
+  top:40%;
+  right:0;
+  border-radius:50%;
+  padding:8px;
+}
+.delete:hover{ 
+  cursor:pointer;
+  box-shadow: 1px 2px 3px rgba(0,0,0,0.2);
+}
+footer{
+  color: #777;
+  text-align: center;
+  margin: 80px auto 20px;
+}
+        </style>
+        <!-- <link rel="stylesheet" href="styles.css"> -->
+    </head>
+<body>
+
+  <!-- <%- include('./partials/nav') %> -->
+
+
+  <div class="details content">
+           <h3><%= blog.title %></h3>
+    <div class="content">
+        <p><%= blog.body %></p>
+    </div>
+    <a class="delete" data-doc= "<%= blog._id %>">delete</a>
+ </div>
+
+      <%- include('./partials/footer.ejs') %>
+
+      <script>
+         const trashCan = document.querySelector('a.delete');
+
+         trashCan.addEventListener('click', (e) => { 
+            console.log('trashcan is',trashCan.dataset.doc)
+            const url = `/blogs/${trashCan.dataset.doc}`
+              console.log(url)
+            fetch(url,{ 
+                method:'DELETE'
+            })
+            .then(res => res.json())
+            .then(data => window.location.href = data.redirect)
+            .catch(err => console.log(err))
+         })
+      </script>
+      
+</body>
+</html>   
